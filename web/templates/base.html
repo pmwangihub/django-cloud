@@ -1,0 +1,31 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+      <head>
+            <meta charset="utf-8">
+            <meta name="viewport" content="width=device-width, initial-scale=1">
+            <link rel="icon"
+                  href="{% static 'ico/favicon.ico' %}"
+                  sizes="48x48"
+                  type="image/icon">
+            {% include "base/css.html" %}
+            {% include "base/head.html" %}
+            <title>Django Cloud Application |</title>
+            {% block reactJs %}
+            {% endblock reactJs %}
+            {% block reactCSS %}
+            {% endblock reactCSS %}
+            {% block extraCSS %}
+            {% endblock extraCSS %}
+      </head>
+      <body>
+            {% include "includes/navbar.html" %}
+            <main id="main">
+                  {% block content %}
+                  {% endblock content %}
+            </main>
+            {% include "base/js.html" %}
+            {% block customJS %}
+            {% endblock customJS %}
+      </body>
+</html>

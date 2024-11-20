@@ -1,0 +1,32 @@
+{% extends "accounts/base.html" %}
+{% block form %}
+    <form method="post" class="row g-3">
+        {% if key %}
+            <h5 class="card-title text-center pb-0 fs-4">
+                Seems your account has activation error.
+                Enter your email to activate your account.
+            </h5>
+        {% else %}
+            <h5 class="card-title text-center pb-0 fs-4">Re-activate your Email Below.</h5>
+        {% endif %}
+        {% csrf_token %}
+        
+        {% if form.non_field_errors %}
+            <div class="col-12">
+                <div class="alert alert-danger" role="alert">{{ form.non_field_errors }}</div>
+            </div>
+        {% endif %}
+        <div class="col-12">
+            <div class="input-group">
+                {{ form.email }}
+                <span class="input-group-text cursor-pointer" id="togglePassword2">
+                    <i class="bi bi-at"></i>
+                </span>
+            </div>
+            {% if form.email.errors %}<div class="text-danger">{{ form.email.errors }}</div>{% endif %}
+        </div>
+        <div class="col-12">
+            <button class="btn btn-primary w-100" type="submit">Resend Activation</button>
+        </div>
+    </form>
+{% endblock form %}

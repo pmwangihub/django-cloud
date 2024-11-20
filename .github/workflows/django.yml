@@ -1,0 +1,49 @@
+name: Django CI
+
+on: [push, pull_request]
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v2
+
+    - name: Set up Python
+      uses: actions/setup-python@v2
+      with:
+        python-version: 3.8
+
+    - name: Install dependencies
+      run: |
+        python -m venv env
+        source env/bin/activate
+        pip install --upgrade pip
+        pip install -r requirements.txt
+
+    - name: Set up environment variables
+      run: |
+        echo "DJANGO_SECRET_KEY=samplesecretkey" >> .env
+        echo "DJANGO_DEBUG=True" >> .env
+
+    - name: Run migrations
+      run: |
+        source env/bin/activate
+        python web/manage.py migrate
+
+    - name: Test WebSocket connection
+      run: |
+        source env/bin/activate
+        python web/manage.py runserver &
+        sleep 5
+        curl -v http://127.0.0.1:8000/
+
+    - name: Start server and run checks
+      run: |
+        source env/bin/activate
+        nohup python web/manage.py runserver 0.0.0.0:8000 &
+        SERVER_PID=$!
+        sleep 10
+        curl -v http://127.0.0.1:8000/
+        kill $SERVER_PID

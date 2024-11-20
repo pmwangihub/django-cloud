@@ -1,0 +1,38 @@
+{% load static %}
+{% if request.user.is_authenticated %}
+    <li class="nav-item dropdown mt-lg-0 mt-3">
+        <a href="#"
+           class="d-block link-dark text-decoration-none dropdown-toggle"
+           data-bs-toggle="dropdown">
+            <button class="btn btn-primary rounded-circle p-2 small" type="button">{{ request.user.get_initials }}</button>
+        </a>
+        <ul class="dropdown-menu custom-dropdown text-small">
+            <div class="d-flex justify-content-between">
+                <div>
+                    <img src="{% static 'ico/logo.png' %}" alt="logo" height="" width="">
+                    <small>Django cloud App</small>
+                </div>
+                <a class="btn btn-warning btn-sm small"
+                   href="{% url 'account:logout_confirm' %}">Sign out</a>
+            </div>
+            <ul class="list-group list-group-flush small mt-2">
+                <li class="list-group-item px-0">
+                    <div class="d-flex w-100 justify-content-between">
+                        {% if request.user.full_name %}
+                            <h5 class="mb-1 fw-bold">
+                                <span>{{ request.user.full_name }}</span>
+                            </h5>
+                        {% else %}
+                            <span class="badge text-bg-warning rounded-pill small mb-1">Update your profile</span>
+                        {% endif %}
+                    </div>
+                    <small>{{ request.user.email }}</small>
+                </li>
+                <a href="{% url 'account:dashboard' %}" class="list-group-item px-0">Account</a>
+                <a href="#" class="list-group-item px-0">Your info</a>
+                <a href="#" class="list-group-item px-0">Settings</a>
+                <a href="#" class="list-group-item px-0">Subscriptions</a>
+            </ul>
+        </ul>
+    </li>
+{% endif %}

@@ -1,0 +1,46 @@
+{% extends "profile/base.html" %}
+{% block profile %}
+    <div class="card w-100 border-0 shadow">
+        <ul class="list-group list-group-flush">
+            <li href="#"  class="list-group-item py-3">
+                <div class="d-flex justify-content-between">
+                    <div class=" fw-bold">Profile info</div>
+                    <a href="{% url 'account:user_update' %}"
+                       class="link-offset-2 link-offset-3-hover link-underline link-underline-opacity-0 link-underline-opacity-75-hover">
+                        Edit profile info
+                    </a>
+                </div>
+            </li>
+            <a href="#"  class="list-group-item list-group-item-action small">
+                <div class="d-flex">
+                    <span class="me-3">Email</span>
+                    <strong>{{ request.user.email }}</strong>
+                </div>
+            </a>
+            <a href="#"  class="list-group-item list-group-item-action small">
+                <div class="d-flex ">
+                    <span class="me-3">Full name</span>
+                    <strong>{{ request.user.full_name }}</strong>
+                </div>
+            </a>
+            <a href="#"  class="list-group-item list-group-item-action small">
+                <div class="d-flex ">
+                    <span class="me-3">Initials</span>
+                    <strong>{{ request.user.get_initials }}</strong>
+                </div>
+            </a>
+            <a href="#"  class="list-group-item list-group-item-action small">
+                <div class="d-flex ">
+                    <span class="me-3">Date Created</span>
+                    <strong class="text-muted">{{ request.user.timestamp |date:"F j, Y, H:i" }}</strong>
+                </div>
+            </a>
+            <a href="#"  class="list-group-item list-group-item-action small">
+                <div class="d-flex ">
+                    <span class="me-3">Account active status</span>
+                    <strong class="text-muted">{{ request.user.is_active }}</strong>
+                </div>
+            </a>
+        </ul>
+    </div>
+{% endblock profile %}

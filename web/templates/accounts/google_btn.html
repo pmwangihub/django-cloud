@@ -1,0 +1,10 @@
+{% load static %}
+<a href="{% url 'google_login' %}"
+   class="badge d-flex text-decoration-none justify-content-center align-items-center p-1 pe-2 text-primary-emphasis bg-primary-subtle border border-primary-subtle rounded">
+    <img class="rounded-circle me-1"
+         width="24"
+         height="24"
+         src="{% static 'images/google.png' %}"
+         alt="">
+    Sign in with Google
+</a>

@@ -1,0 +1,16 @@
+{% extends "emails/base.html" %}
+{% block content %}
+    <div class="content">
+        <p>Hello,</p>
+        <p>
+            Please activate your account for <strong>{{ email }}</strong> by clicking the button below:
+        </p>
+        <p style="text-align: center;">
+            <a href="{{ path }}" class="btn" target="_blank">Activate Your Account</a>
+        </p>
+        <p>Once you activate your account, you can log in and explore more features.</p>
+        <p>
+            Thank you for joining us! If you have any questions, feel free to reply to this email or contact our support team.
+        </p>
+    </div>
+{% endblock content %}

@@ -1,0 +1,70 @@
+.navbar-nav {
+  --bs-nav-link-padding-y: 0rem !important;
+}
+
+.cursor-pointer {
+  cursor: pointer !important;
+}
+
+.errorlist li {
+  list-style: none;
+}
+
+.custom-dropdown {
+  width: 320px !important;
+  right: 0 !important;
+  left: auto !important;
+  padding: 1rem;
+}
+
+.custom-dropdown img {
+  height: 30px;
+}
+
+.errorlist {
+  padding: 0;
+}
+
+body {
+  font-family: "Ubuntu", sans-serif;
+  background-image: url("../images/grid.png");
+  font-size: 0.95rem;
+}
+
+#main {
+  height: 88vh !important;
+  padding-top: 85px;
+}
+
+input.form-control:focus,
+select.form-select:focus,
+textarea.form-control:focus,
+button.btn:focus {
+  box-shadow: none;
+  border-color: #0008ff;
+}
+
+.accordion-button:focus {
+  box-shadow: none !important;
+}
+
+.custom-accordion-btn {
+  text-align: left !important;
+  line-height: 1.25 !important;
+  gap: 0.5rem !important;
+  align-items: flex-start !important;
+  display: flex !important;
+}
+.custom-accordion-btn.collapsed:hover {
+  background-color: #e8e8e8;
+}
+.nav-pills .nav-link.active,
+.nav-pills .show > .nav-link {
+  color: #000000;
+  background-color: #f1f1f1;
+  box-shadow: #00000022 0px 1.6px 3.6px 0px;
+  font-weight: bolder;
+}
+.navbar {
+  background-color: #1503eb !important;
+}

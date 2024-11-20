@@ -1,0 +1,9 @@
+{% extends "accounts/base.html" %}
+{% block form %}
+    <form method="post" class="d-flex justify-content-between">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <button type="submit" class="btn btn-danger">Yes, Log me out</button>
+        <a href="{% url 'home' %}" class="btn btn-secondary">Cancel</a>
+    </form>
+{% endblock form %}

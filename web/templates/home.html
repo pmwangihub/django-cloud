@@ -1,0 +1,155 @@
+{% extends "base.html" %}
+{% load static %}
+{% block extraCSS %}
+    <style>
+            .stack-image{
+                height:50px
+            }
+    </style>
+{% endblock extraCSS %}
+{% block content %}
+    <div class="container mb-5">
+        <div class="p-5 text-center bg-body-tertiary rounded-3">
+            <img src="{% static 'ico/logo.png' %}" height="100" width="" alt="logo">
+            <h1 class="text-body-emphasis">Advanced Authentication System</h1>
+            <p class="col-lg-8 mx-auto fs-5 text-muted">Secure, scalable authentication with Django, React, and React Native</p>
+            <div class="d-inline-flex gap-2 mb-5">
+                <a class="d-inline-flex align-items-center btn btn-primary btn-lg px-4 rounded-pill"
+                   href="{% url 'account:login' %}">
+                    Get started
+                    <i class="bi bi-arrow-right-short"></i>
+                </a>
+                <a href="#features"
+                   class="btn btn-outline-secondary btn-lg px-4 rounded-pill">Main Features</a>
+            </div>
+            {% if processed_data %}
+                <div class=" mb-5">
+                    {% for data in processed_data %}
+                        <strong>{{ data }}</strong>
+                        <br>
+                    {% endfor %}
+                </div>
+            {% endif %}
+        </div>
+    </div>
+    <section id="features" class="py-5">
+        <div class="container">
+            <div class="row text-center">
+                <div class="col-md-4 mb-4">
+                    <div class="card border-primary border-2 shadow-sm h-100">
+                        <div class="card-body">
+                            <i class="bx bxs-lock-alt fs-1 text-primary mb-3"></i>
+                            <h3>Session & Token Authentication</h3>
+                            <p>
+                                Seamless user authentication using Django sessions for web (React) and token-based authentication for APIs (React Native).
+                            </p>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-4 mb-4">
+                    <div class="card border-primary border-2 shadow-sm h-100">
+                        <div class="card-body">
+                            <i class="bx bxl-postgresql fs-1 mb-3" style="color: #0985c2;"></i>
+                            <h3>Serverless PostgreSQL DB</h3>
+                            <p>Cloud-hosted serverless PostgreSQL database for scalable and efficient data management.</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-4 mb-4">
+                    <div class="card border-primary border-2 shadow-sm h-100">
+                        <div class="card-body">
+                            <i class="bx bxs-message-rounded-dots fs-1 text-success mb-3"></i>
+                            <h3>WebSockets for Messaging</h3>
+                            <p>Real-time communication between users and server using Django Channels and WebSockets.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    <section class="bg-light py-5">
+        <div class="container">
+            <div class="row text-center">
+                <div class="col-md-6 mb-4">
+                    <i class="bx bx-shield-quarter fs-1 text-warning mb-3"></i>
+                    <h3>Rate Limiting for Security</h3>
+                    <p>
+                        Protect your views and APIs from brute-force attacks with Django Ratelimit. Secure and scalable rate-limiting features are built-in.
+                    </p>
+                </div>
+                <div class="col-md-6 mb-4">
+                    <i class="bx bxs-mobile fs-1 text-danger mb-3"></i>
+                    <h3>Mobile Authentication</h3>
+                    <p>Token-based authentication built for mobile apps with React Native. Scalable and secure token handling.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+    <section class="py-5">
+        <div class="container text-center">
+            <h2 class="mb-4">Tech Stack</h2>
+            <div class="d-flex justify-content-center align-items-center flex-wrap">
+                <div class="p-3">
+                    <img src="https://cdn.jsdelivr.net/npm/simple-icons/icons/django.svg"
+                         alt="Django"
+                         class="stack-image">
+                    <p>Django</p>
+                </div>
+                <div class="p-3">
+                    <img src="https://cdn.jsdelivr.net/npm/simple-icons/icons/react.svg"
+                         alt="React"
+                         class="stack-image">
+                    <p>React</p>
+                </div>
+                <div class="p-3">
+                    <img src="https://cdn.jsdelivr.net/npm/simple-icons/icons/docker.svg"
+                         alt="Docker"
+                         class="stack-image">
+                    <p>Docker</p>
+                </div>
+                <div class="p-3">
+                    <img src="https://cdn.jsdelivr.net/npm/simple-icons/icons/redux.svg"
+                         alt="React Native"
+                         class="stack-image">
+                    <p>React Native</p>
+                </div>
+                <div class="p-3">
+                    <img src="https://cdn.jsdelivr.net/npm/simple-icons/icons/celery.svg"
+                         alt="celery"
+                         class="stack-image">
+                    <p>Celery</p>
+                </div>
+                <div class="p-3">
+                    <img src="https://cdn.jsdelivr.net/npm/simple-icons/icons/postgresql.svg"
+                         alt="PostgreSQL"
+                         class="stack-image">
+                    <p>PostgreSQL</p>
+                </div>
+                <div class="p-3">
+                    <img src="https://cdn.jsdelivr.net/npm/simple-icons/icons/redis.svg"
+                         alt="redis"
+                         class="stack-image">
+                    <p>Redis</p>
+                </div>
+                <div class="p-3">
+                    <img src="https://cdn.jsdelivr.net/npm/simple-icons/icons/selenium.svg"
+                         alt="selenium"
+                         class="stack-image">
+                    <p>Selenium</p>
+                </div>
+                <div class="p-3">
+                    <img src="https://cdn.jsdelivr.net/npm/simple-icons/icons/python.svg"
+                         alt="python"
+                         class="stack-image">
+                    <p>Python</p>
+                </div>
+            </div>
+        </div>
+    </section>
+    <footer class="bg-dark text-light text-center p-4">
+        <p>© 2024 PM Innovest - All Rights Reserved</p>
+        <a href="https://github.com/mwangihub" class="text-light"><i class="bx bxl-github fs-3"></i></a>
+        <a href="mailto:pminnovest@gmail.com" class="text-light ms-2"><i class=" bx bxl-google-plus-circle fs-3"></i></a>
+        <a href="https://pminnovest.com" class="text-light ms-2"><i class="bx bx-globe fs-3"></i></a>
+    </footer>
+{% endblock content %}

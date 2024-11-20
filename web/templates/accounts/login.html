@@ -1,0 +1,53 @@
+{% extends "accounts/base.html" %}
+{% block form %}
+    <form method="post" class="row g-3">
+        {% csrf_token %}
+        {% if form.non_field_errors %}
+            <div class="col-12">
+                <div class="alert alert-danger" role="alert">{{ form.non_field_errors }}</div>
+            </div>
+        {% endif %}
+        <div class="col-12">
+            <div class="input-group">
+                {{ form.email }}
+                <span class="input-group-text ">
+                    <i class="bi bi-at"></i>
+                </span>
+            </div>
+            {% if form.email.errors %}<div class="text-danger">{{ form.email.errors }}</div>{% endif %}
+        </div>
+        <div class="col-12">
+            <div class="input-group">
+                {{ form.password }}
+                <span class="input-group-text cursor-pointer" id="togglePassword1">
+                    <i class="bi bi-eye" id="eyeIcon1"></i>
+                </span>
+            </div>
+            {% if form.password.errors %}<div class="text-danger">{{ form.password.errors }}</div>{% endif %}
+        </div>
+        <div class="col-12">
+            <button class="btn btn-primary w-100" type="submit">Login</button>
+        </div>
+        <div class="col-12">
+            <p class="small mb-0">
+                Create an account <a href="{% url 'account:register' %}">Register</a>
+            </p>
+        </div>
+        <div class="col-12">
+            <hr class="mb-4">
+            {% include "accounts/google_btn.html" %}
+        </div>
+    </form>
+    <script type="text/javascript">
+    // JavaScript to toggle password visibility
+    document.getElementById('togglePassword1').addEventListener('click', function (e) {
+        const passwordField = document.getElementById('password1');
+        const eyeIcon = document.getElementById('eyeIcon1');
+        const type = passwordField.getAttribute('type') === 'password' ? 'text' : 'password';
+        passwordField.setAttribute('type', type);
+        eyeIcon.classList.toggle('bi-eye-slash');
+    });
+
+    
+    </script>
+{% endblock form %}
