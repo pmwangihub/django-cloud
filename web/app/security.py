@@ -3,7 +3,6 @@ from datetime import timedelta
 from corsheaders.defaults import default_headers
 from pathlib import Path
 
-
 BASE_DIR = Path(__file__).resolve().parent.parent
 DEBUG = str(os.environ.get("DJANGO_DEBUG")) == "1"
 
