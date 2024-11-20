@@ -23,9 +23,13 @@ jobs:
         pip install -r requirements.txt
 
     - name: Set up environment variables
+      env:
+          DJANGO_SECRET_KEY: ${{ secrets.DJANGO_SECRET_KEY }}
+          DJANGO_DEBUG: ${{ secrets.DJANGO_DEBUG }}
+          DATABASE_URL: ${{ secrets.DATABASE_URL }}
+          REDIS_URL: ${{ secrets.REDIS_URL }}
       run: |
-        echo "DJANGO_SECRET_KEY=samplesecretkey" >> .env
-        echo "DJANGO_DEBUG=True" >> .env
+          echo "Environment variables are set."
 
     - name: Run migrations
       run: |
