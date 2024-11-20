@@ -3,7 +3,7 @@ name: Django CI
 on: [push, pull_request]
 
 jobs:
-  test:
+  Django_Cloud_App_Test:
     runs-on: ubuntu-latest
     
     steps:
@@ -24,12 +24,19 @@ jobs:
 
     - name: Set up environment variables
       env:
-          DJANGO_SECRET_KEY: ${{ secrets.DJANGO_SECRET_KEY }}
-          DJANGO_DEBUG: ${{ secrets.DJANGO_DEBUG }}
-          DATABASE_URL: ${{ secrets.DATABASE_URL }}
-          REDIS_URL: ${{ secrets.REDIS_URL }}
+        DJANGO_SECRET_KEY: ${{ secrets.DJANGO_SECRET_KEY }}
+        DJANGO_DEBUG: ${{ secrets.DJANGO_DEBUG }}
+        DATABASE_URL: ${{ secrets.DATABASE_URL }}
+        REDIS_URL: ${{ secrets.REDIS_URL }}
       run: |
-          echo "Environment variables are set."
+        echo "Environment variables are set."
+        
+    - name: Debug environment variables
+      run: |
+        echo "DJANGO_SECRET_KEY: $DJANGO_SECRET_KEY"
+        echo "DJANGO_DEBUG: $DJANGO_DEBUG"
+        echo "DATABASE_URL: $DATABASE_URL"
+        echo "REDIS_URL: $REDIS_URL"
 
     - name: Run migrations
       run: |
