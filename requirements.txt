@@ -17,6 +17,7 @@ celery
 
 psycopg2-binary
 gunicorn
+uvicorn
 
 requests
 rav
