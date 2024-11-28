@@ -46,8 +46,8 @@ CSRF_TRUSTED_ORIGINS = ["https://*.ngrok-free.app"]
 SECURE_PROXY_SSL_HEADER = ("HTTP_X_FORWARDED_PROTO", "https")
 
 # Set secure cookie parameters
-SESSION_COOKIE_SECURE = False  # Ensure cookies are only sent over HTTPS
-CSRF_COOKIE_SECURE = False
+SESSION_COOKIE_SECURE = not DEBUG  # Ensure cookies are only sent over HTTPS
+CSRF_COOKIE_SECURE = not DEBUG
 
 
 # -------------------------------------------------

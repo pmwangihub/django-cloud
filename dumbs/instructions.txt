@@ -1,0 +1,340 @@
+
+
+ssh -i C:\DEV\SSH\droplet1 root@165.232.106.47
+
+adduser mwangi 
+usermod -aG sudo mwangi
+
+ufw allow OpenSSH
+ufw enable
+
+sudo usermod -aG www-data mwangi
+sudo usermod -aG www-data root
+
+
+getent group www-data
+groups mwangi
+
+
+su - mwangi
+sudo apt update &&
+sudo apt upgrade -y
+sudo apt install python3-pip python3-dev libpq-dev postgresql postgresql-contrib nginx curl -y
+sudo apt install  nginx  -y
+
+
+pmwassini@gmail.com
+CX544n8kA8hvs5ge62PIyH3
+
+su mwangi
+
+cd /home/mwangi/pminnovest && source env/bin/activate  &&  cd portfolio
+
+git init && git remote add origin https://github.com/mwangihub/portfolio.git && \
+git pull origin main 
+
+python3 -m venv env
+
+source env/bin/activate
+
+
+nano .env
+
+pip install -r requirements.txt --no-cache-dir
+
+rav run migrate && rav run static && rav run user 
+
+---------------------- PERMISSIONS ------------------------------
+
+sudo chown -R :www-data /home/mwangi
+
+sudo chmod -R 775 /home/mwangi
+
+python manage.py collectstatic
+
+----------------------  ------------------------------
+
+sudo ufw allow 8000
+
+python manage.py runserver 0.0.0.0:8000
+
+http://165.232.106.47:8000/
+
+gunicorn --bind 0.0.0.0:8000 src.asgi -w 4 -k uvicorn.workers.UvicornWorker
+
+deactivate
+
+xxxxxxxxxxxxxxxxxxxxxxxxxxxx Socket xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+
+
+sudo nano /etc/systemd/system/gunicorn.socket
+
+[Unit]
+Description=gunicorn socket
+
+[Socket]
+ListenStream=/run/gunicorn.sock
+
+[Install]
+WantedBy=sockets.target
+
+xxxxxxxxxxxxxxxxxxxxxxxxxxxx Socket xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+
+sudo rm /etc/systemd/system/gunicorn.service
+sudo nano /etc/systemd/system/gunicorn.service
+
+
+
+[Unit]
+Description=gunicorn daemon
+Requires=gunicorn.socket
+After=network.target
+
+[Service]
+User=mwangi
+Group=www-data
+WorkingDirectory=/home/mwangi/pminnovest/app
+ExecStart=/home/mwangi/pminnovest/env/bin/gunicorn --access-logfile /home/mwangi/pminnovest/log/access.log -k uvicorn.workers.UvicornWorker --workers 3 --bind unix:/run/gunicorn.sock src.asgi:application
+
+[Install]
+WantedBy=multi-user.target
+
+
+sudo systemctl daemon-reload && \
+sudo systemctl restart gunicorn.socket && \
+sudo systemctl enable gunicorn.socket && \
+sudo systemctl status gunicorn.socket
+
+sudo systemctl stop gunicorn.socket
+
+sudo systemctl daemon-reload && \
+sudo systemctl restart gunicorn.service && \
+sudo systemctl enable gunicorn.service && \
+sudo systemctl status gunicorn.service
+
+
+sudo systemctl stop gunicorn.service
+
+
+
+date +"%Y-%m-%d %r"
+
+
+------------------------------ NGINX ----------------------------
+
+
+
+
+sudo systemctl stop nginx
+
+sudo rm /etc/nginx/sites-available/pminnovest
+
+sudo nano /etc/nginx/sites-available/pminnovest
+
+
+
+
+************************* NGINX FILE ********************************************
+
+server {
+
+    listen 80;
+
+    server_name www.pminnovest.com 165.22.112.204;
+
+    location = /favicon.ico { access_log off; log_not_found off; }
+
+    location /static/ {
+        alias /home/mwangi/pminnovest/app/staticfiles/;
+    }
+
+    location /media/ {
+        alias /home/mwangi/pminnovest/app/media/;
+    }
+
+
+      location / {
+        include proxy_params;
+        proxy_pass http://unix:/run/gunicorn.sock;
+    }
+
+}
+
+-------------------  ENCRYPT ----------------------------------------------
+
+sudo apt install certbot python3-certbot-nginx -y
+
+
+sudo certbot --nginx -d www.pminnovest.com -d pminnovest.com
+
+
+sudo nano /etc/nginx/sites-enabled/default
+sudo rm /etc/nginx/sites-enabled/default
+
+sudo rm /etc/nginx/sites-enabled/pminnovest
+
+sudo ln -s /etc/nginx/sites-available/pminnovest /etc/nginx/sites-enabled
+
+sudo nginx -t && sudo systemctl restart nginx &&  sudo systemctl status nginx 
+
+sudo ufw delete allow 8000  && \
+
+sudo ufw allow 'Nginx Full'
+
+sudo ufw status
+
+
+
+sudo rm /var/log/nginx/error.log
+
+sudo nano  /var/log/nginx/error.log
+
+sudo tail -F /var/log/nginx/error.log
+
+
+ps aux | grep nginx
+sudo kill -9 84559
+sudo systemctl restart nginx
+
+
+
+
+
+
+sudo rm /home/mwangi/log/access.log
+
+sudo nano  /home/mwangi/log/access.log
+
+sudo tail -F /home/mwangi/log/access.log
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+---------------------------- CELERY BEAT SERVICE ----------------------------
+
+sudo apt install redis-server
+
+sudo systemctl restart redis-server
+
+sudo systemctl status redis-server
+sudo systemctl stop redis-server
+
+redis-cli ping
+
+sudo nano  /etc/systemd/system/celery_beat.service
+
+# ---------------------------- CELERY BEAT SERVICE ----------------------------
+
+[Unit]
+Description=Celery Beat Service
+After=network.target
+
+[Service]
+Type=simple
+User=mwangi
+Group=mwangi
+WorkingDirectory=/home/mwangi/portfolio
+ExecStart=/home/mwangi/env/bin/celery -A src beat --loglevel=info
+Restart=always
+
+[Install]
+WantedBy=multi-user.target
+
+
+# ---------------------------- CELERY BEAT SERVICE ----------------------------
+
+sudo systemctl stop celery_beat
+
+sudo systemctl daemon-reload &&
+sudo systemctl enable celery_beat &&
+sudo systemctl start celery_beat &&
+sudo systemctl status celery_beat
+
+
+sudo journalctl -u celery_beat
+
+
+
+
+
+
+
+
+
+
+---------------------------- CELERY  ----------------------------
+
+
+
+sudo nano  /etc/systemd/system/celery_service.service
+
+# ---------------------------- CELERY ----------------------------
+
+[Unit]
+Description=Celery Beat Service
+After=network.target
+
+[Service]
+Type=simple
+User=mwangi
+Group=mwangi
+WorkingDirectory=/home/mwangi/portfolio
+ExecStart=/home/mwangi/env/bin/celery -A src worker --loglevel=info --pool=solo
+Restart=always
+
+[Install]
+WantedBy=multi-user.target
+
+
+# ---------------------------- CELERY BEAT SERVICE ----------------------------
+
+sudo systemctl stop celery_service
+
+sudo systemctl daemon-reload &&
+sudo systemctl enable celery_service &&
+sudo systemctl start celery_service &&
+sudo systemctl status celery_service
+
+sudo journalctl -u celery_service
+
+
+
+
+
+
+
+
+
+    location /static/ {
+        alias /home/mwangi/pminnovest/app/static/;
+    }
+
+    location /media/ {
+        alias /home/mwangi/pminnovest/app/media/;
+    }
