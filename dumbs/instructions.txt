@@ -44,6 +44,8 @@ pip install -r requirements.txt --no-cache-dir
 
 rav run migrate && rav run static && rav run user 
 
+#/home/mwangi/django_cloud/backend/web/staticfiles
+
 ---------------------- PERMISSIONS ------------------------------
 
 sudo chown -R :www-data /home/mwangi
@@ -60,60 +62,62 @@ python manage.py runserver 0.0.0.0:8000
 
 http://165.232.106.47:8000/
 
-gunicorn --bind 0.0.0.0:8000 src.asgi -w 4 -k uvicorn.workers.UvicornWorker
+gunicorn --bind 0.0.0.0:8000 web.app.asgi -w 4 -k uvicorn.workers.UvicornWorker
 
 deactivate
 
 xxxxxxxxxxxxxxxxxxxxxxxxxxxx Socket xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
 
 
-sudo nano /etc/systemd/system/gunicorn.socket
+sudo nano /etc/systemd/system/django_cloud.socket
+sudo rm /etc/systemd/system/django_cloud.socket
+
 
 [Unit]
-Description=gunicorn socket
+Description=Django cloud socket
 
 [Socket]
-ListenStream=/run/gunicorn.sock
+ListenStream=/run/django_cloud.socket
 
 [Install]
 WantedBy=sockets.target
 
 xxxxxxxxxxxxxxxxxxxxxxxxxxxx Socket xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
 
-sudo rm /etc/systemd/system/gunicorn.service
-sudo nano /etc/systemd/system/gunicorn.service
+sudo rm /etc/systemd/system/django_cloud.service
+sudo nano /etc/systemd/system/django_cloud.service
 
 
 
 [Unit]
-Description=gunicorn daemon
-Requires=gunicorn.socket
+Description=Django Cloud daemon service
+#Requires=django_cloud.socket
 After=network.target
 
 [Service]
 User=mwangi
 Group=www-data
-WorkingDirectory=/home/mwangi/pminnovest/app
-ExecStart=/home/mwangi/pminnovest/env/bin/gunicorn --access-logfile /home/mwangi/pminnovest/log/access.log -k uvicorn.workers.UvicornWorker --workers 3 --bind unix:/run/gunicorn.sock src.asgi:application
+WorkingDirectory=/home/mwangi/django_cloud/backend/web 
+ExecStart=/home/mwangi/django_cloud/backend/env/bin/gunicorn --bind 0.0.0.0:8000 app.asgi:application -w 4 -k uvicorn.workers.UvicornWorker
 
 [Install]
 WantedBy=multi-user.target
 
 
 sudo systemctl daemon-reload && \
-sudo systemctl restart gunicorn.socket && \
-sudo systemctl enable gunicorn.socket && \
-sudo systemctl status gunicorn.socket
+sudo systemctl restart django_cloud.socket && \
+sudo systemctl enable django_cloud.socket && \
+sudo systemctl status django_cloud.socket
 
-sudo systemctl stop gunicorn.socket
+sudo systemctl stop django_cloud.socket
 
 sudo systemctl daemon-reload && \
-sudo systemctl restart gunicorn.service && \
-sudo systemctl enable gunicorn.service && \
-sudo systemctl status gunicorn.service
+sudo systemctl restart django_cloud.service && \
+sudo systemctl enable django_cloud.service && \
+sudo systemctl status django_cloud.service
 
 
-sudo systemctl stop gunicorn.service
+sudo systemctl stop django_cloud.service
 
 
 
@@ -127,9 +131,9 @@ date +"%Y-%m-%d %r"
 
 sudo systemctl stop nginx
 
-sudo rm /etc/nginx/sites-available/pminnovest
+sudo rm /etc/nginx/sites-available/django_cloud
 
-sudo nano /etc/nginx/sites-available/pminnovest
+sudo nano /etc/nginx/sites-available/django_cloud
 
 
 
@@ -140,22 +144,22 @@ server {
 
     listen 80;
 
-    server_name www.pminnovest.com 165.22.112.204;
+    server_name www.django-app.pminnovest.com django-app.pminnovest.com;
 
     location = /favicon.ico { access_log off; log_not_found off; }
 
     location /static/ {
-        alias /home/mwangi/pminnovest/app/staticfiles/;
+        alias /home/mwangi/django_cloud/backend/web/staticfiles/;
     }
 
     location /media/ {
-        alias /home/mwangi/pminnovest/app/media/;
+        alias /home/mwangi/django_cloud/backend/web/media/;
     }
 
 
       location / {
         include proxy_params;
-        proxy_pass http://unix:/run/gunicorn.sock;
+        proxy_pass http://127.0.0.1:8000;
     }
 
 }
@@ -165,15 +169,19 @@ server {
 sudo apt install certbot python3-certbot-nginx -y
 
 
-sudo certbot --nginx -d www.pminnovest.com -d pminnovest.com
+sudo certbot --nginx -d www.django-app.pminnovest.com -d django-app.pminnovest.com
 
 
 sudo nano /etc/nginx/sites-enabled/default
 sudo rm /etc/nginx/sites-enabled/default
+sudo rm /etc/nginx/sites-available/default
 
-sudo rm /etc/nginx/sites-enabled/pminnovest
+sudo rm /etc/nginx/sites-enabled/django_cloud
+sudo nano /etc/nginx/sites-enabled/django_cloud
 
-sudo ln -s /etc/nginx/sites-available/pminnovest /etc/nginx/sites-enabled
+sudo ln -s /etc/nginx/sites-available/django_cloud /etc/nginx/sites-enabled
+
+sudo ln -s /etc/nginx/sites-available/default /etc/nginx/sites-enabled
 
 sudo nginx -t && sudo systemctl restart nginx &&  sudo systemctl status nginx 
 
@@ -193,6 +201,7 @@ sudo tail -F /var/log/nginx/error.log
 
 
 ps aux | grep nginx
+sudo kill -9 999964
 sudo kill -9 84559
 sudo systemctl restart nginx
 
@@ -338,3 +347,19 @@ sudo journalctl -u celery_service
     location /media/ {
         alias /home/mwangi/pminnovest/app/media/;
     }
+
+
+
+
+django_cloud/
+├── backend/
+│   ├── env/
+│   ├── web/
+│   ├── __init__.py
+│   │   ├── app/
+│   │   │   ├── __init__.py
+│   │   │   ├── asgi.py
+│   │   │   ├── settings.py
+│   │   │   ├── urls.py
+│   │   │   ├── wsgi.py
+│   ├── manage.py
