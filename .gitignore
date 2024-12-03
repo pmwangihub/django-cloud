@@ -1,3 +1,6 @@
+# Local
+*dumps
+
 # Django #
 *.log
 *.pot
@@ -137,5 +140,5 @@ GitHub.sublime-settings
 !.vscode/extensions.json 
 .history
 .vscode
-*dumps
+
 staticfiles
