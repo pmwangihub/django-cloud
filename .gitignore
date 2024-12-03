@@ -1,5 +1,6 @@
 # Local
 *dumps
+*staticfiles
 
 # Django #
 *.log
@@ -141,4 +142,3 @@ GitHub.sublime-settings
 .history
 .vscode
 
-staticfiles
