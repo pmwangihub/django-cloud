@@ -13,7 +13,7 @@ DEBUG = str(os.environ.get("DJANGO_DEBUG")) == "1"
 # Allow credentials to be sent in cross-origin requests
 CORS_ALLOWED_ORIGINS = [
     "http://localhost:5173",
-    "http://localhost:4173",
+    "https://www.django-cloud.pminnovest.com",
 ]
 
 # Allow cookies to be sent
@@ -30,15 +30,20 @@ CORS_ALLOW_HEADERS = list(default_headers) + [
 
 # To determine where request is coming from.
 # For this case, my react app is running from this localhost
-X_ORIGIN_HOST: str = str(os.environ.get("GOOGLE_CLIENT_SECRET"))
-X_ORIGIN_ACTIVATE_ACCOUNT_PATH: str = str(os.environ.get("GOOGLE_CLIENT_SECRET"))
+X_ORIGIN_HOST: str = str(os.environ.get("X_ORIGIN_HOST"))
+X_ORIGIN_ACTIVATE_ACCOUNT_PATH: str = str(
+    os.environ.get("X_ORIGIN_ACTIVATE_ACCOUNT_PATH")
+)
 
 
 # -------------------------------------------------
 # ------------- DJANGO SETTINGS -------------------
 # -------------------------------------------------
 
-CSRF_TRUSTED_ORIGINS = ["https://*.ngrok-free.app"]
+CSRF_TRUSTED_ORIGINS = [
+    "https://*.ngrok-free.app",
+    "https://www.django-app.pminnovest.com",
+]
 # Django has a setting called SECURE_PROXY_SSL_HEADER which tells
 # it to properly detect the protocol when the app is running
 # behind a proxy (e.g., Ngrok, AWS ELB, etc.).

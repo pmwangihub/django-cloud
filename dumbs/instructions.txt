@@ -1,6 +1,6 @@
 
 
-ssh -i C:\DEV\SSH\droplet1 root@165.232.106.47
+ssh -i C:\DEV\SSH\droplet2 root@165.232.106.47
 
 adduser mwangi 
 usermod -aG sudo mwangi
@@ -42,7 +42,9 @@ nano .env
 
 pip install -r requirements.txt --no-cache-dir
 
-rav run migrate && rav run static && rav run user 
+python web/manage.py collectstatic
+python web/manage.py migrate
+python web/manage.py createsuperuser
 
 #/home/mwangi/django_cloud/backend/web/staticfiles
 
@@ -52,17 +54,15 @@ sudo chown -R :www-data /home/mwangi
 
 sudo chmod -R 775 /home/mwangi
 
-python manage.py collectstatic
-
 ----------------------  ------------------------------
 
 sudo ufw allow 8000
 
-python manage.py runserver 0.0.0.0:8000
+python web/manage.py runserver 0.0.0.0:8000
 
 http://165.232.106.47:8000/
 
-gunicorn --bind 0.0.0.0:8000 web.app.asgi -w 4 -k uvicorn.workers.UvicornWorker
+gunicorn --bind 0.0.0.0:8000 app.asgi -w 4 -k uvicorn.workers.UvicornWorker
 
 deactivate
 
