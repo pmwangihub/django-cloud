@@ -12,7 +12,7 @@ SECRET_KEY = os.environ.get("DJANGO_SECRET_KEY")
 
 ROOT_URLCONF = "app.urls"
 
-ASGI_APPLICATION = "web.app.asgi.application"
+ASGI_APPLICATION = "app.asgi.application"
 
 AUTH_USER_MODEL = "accounts.User"
 LOGIN_URL = "/login/"
